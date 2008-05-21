@@ -20,14 +20,6 @@ $Custom_Field_Value = 'yes';    // The value of the custom field that indicates 
 $Email_Format = 'html';         // The customer's preferred email format.
 $Send_Confirmation = true;      // If true, MailChimp will send a confirmation email to the customer.
 
-// 
-// $subscribed = subscribe_user_to_list(
-//     array('first_name' => '_phred', 'last_name' => 'alger', 'email' => 'frederick.alger@gmail.com'),
-//     'My First List',
-//     $MailChimp_Auth);
-//     
-// echo $subscribed;
-
 $key = 'CHANGE THIS TEXT to your own datafeed keyphrase';
 
 $_POST['FoxyData'] or die("error"); // Make sure we got passed some FoxyData
