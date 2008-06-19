@@ -39,7 +39,7 @@ class MCAPI {
     /**
      * Unschedule a campaign that is scheduled to be sent in the future
      *
-     * @section Campaign Related
+     * @section Campaign  Related
      * @example xml-rpc_campaignUnschedule.php
      *
      * @param string $cid the id for the campaign to unschedule
@@ -54,7 +54,7 @@ class MCAPI {
     /**
      * Schedule a campaign to be sent in the future
      *
-     * @section Campaign Related
+     * @section Campaign  Related
      * @example xml-rpc_campaignSchedule.php
      *
      * @param string $cid the id for the campaign to schedule
@@ -71,7 +71,7 @@ class MCAPI {
     /**
      * Send a given campaign immediately
      *
-     * @section Campaign Related
+     * @section Campaign  Related
      * @example xml-rpc_campaignSend.php
      *
      * @param string $cid the id for the campaign to send
@@ -86,7 +86,7 @@ class MCAPI {
     /**
      * Send a test of this campaign to the provided email address
      *
-     * @section Campaign Related
+     * @section Campaign  Related
      * @example xml-rpc_campaignSendTest.php
      *
      * @param string $cid the id for the campaign to test
@@ -106,10 +106,14 @@ class MCAPI {
     /**
      * Retrieve all templates defined for your user account
      *
-     * @section Campaign Related
+     * @section Campaign  Related
      * @example xml-rpc_campaignTemplates.php
      *
-     * @return array an array of structs, one for each template, with the following parameters: "id" - the ID for the template, "name" - the name of the template, "layout" - the layout of the template ("basic", "left_column", "right_column", or "postcard"), and "sections" - an array of editable sections in the template that can accept custom HTML when sending a campaign
+     * @return array An array of structs, one for each template (see Returned Fields for details)
+     * @returnf integer id Id of the template
+     * @returnf string name Name of the template
+     * @returnf string layout Layout of the template - "basic", "left_column", "right_column", or "postcard"
+     * @returnf array sections associative array of editable sections in the template that can accept custom HTML when sending a campaign
      */
     function campaignTemplates() {
         $params = array();
@@ -119,7 +123,7 @@ class MCAPI {
     /**
      * Create a new draft campaign to send
      *
-     * @section Campaign Related
+     * @section Campaign  Related
      * @example xml-rpc_createCampaign.php
      *
      * @param string $list_id the list to send this campaign to- get lists using getLists()
@@ -156,7 +160,7 @@ class MCAPI {
     /**
      * Get the list of campaigns and associated information for a list
      *
-     * @section Campaign Related
+     * @section Campaign  Related
      *
      * @param string $filter_id optional - only show campaigns from this list id - get lists using getLists()
      * @param integer $filter_folder optional - only show campaigns from this folder id - get folders using campaignFolders()
@@ -169,7 +173,18 @@ class MCAPI {
      * @param boolean $filter_exact optional - flag for whether to filter on exact values when filtering, or search within content for filter values
      * @param integer $start optional - control paging of campaigns, start results at this campaign #, defaults to 0 (beginning)
      * @param integer $limit optional - control paging of campaigns, number of campaigns to return with each call, defaults to 25 (max=5000)
-     * @return array list of campaigns and their associated information
+     * @return array list of campaigns and their associated information (see Returned Fields for description)
+     * @returnf string id Campaign Id (used for all other campaign functions)
+     * @returnf string title Title of the campaign
+     * @returnf date create_time Creation time for the campaign
+     * @returnf date send_time Send time for the campaign
+     * @returnf int emails_sent Number of emails email was sent to
+     * @returnf string status Status of the given campaign (sent,scheduled,etc.)
+     * @returnf string from_name From name of the given campaign
+     * @returnf string from_email Reply-to email of the given campaign
+     * @returnf string subject Subject of the given campaign
+     * @returnf string to_email To email string
+     * @returnf string archive_url Archive link for the given campaign
      */
     function campaigns($filter_id=NULL, $filter_folder=NULL, $filter_fromname=NULL, $filter_fromemail=NULL, $filter_title=NULL, $filter_subject=NULL, $filter_sendtimestart=NULL, $filter_sendtimeend=NULL, $filter_exact=true, $start=0, $limit=25) {
         $params = array();
@@ -190,9 +205,11 @@ class MCAPI {
     /**
      * List all the folders for a user account
      *
-     * @section Campaign Related
+     * @section Campaign  Related
      *
-     * @return array list of folders with their ids and names
+     * @return array Array of folder structs (see Returned Fields for details)
+     * @returnf integer folder_id Folder Id for the given folder, this can be used in the campaigns() function to filter on.
+     * @returnf string name Name of the given folder
      */
     function campaignFolders() {
         $params = array();
@@ -202,10 +219,25 @@ class MCAPI {
     /**
      * Given a list and a campaign, get all the relevant campaign statistics (opens, bounces, clicks, etc.)
      *
-     * @section Campaign Related
+     * @section Campaign  Stats
      *
      * @param string $cid the campaign id to pull stats for (can be gathered using campaigns($id))
      * @return array struct of the statistics for this campaign
+     * @returnf integer syntax_errors Number of email addresses in campaign that had syntactical errors.
+     * @returnf integer hard_bounces Number of email addresses in campaign that hard bounced.
+     * @returnf integer soft_bounces Number of email addresses in campaign that soft bounced.
+     * @returnf integer unsubscribes Number of email addresses in campaign that unsubscribed.
+     * @returnf integer abuse_reports Number of email addresses in campaign that reported campaign for abuse.
+     * @returnf integer forwards Number of times email was forwarded to a friend.
+     * @returnf integer forwards_opens Number of times a forwarded email was opened.
+     * @returnf integer opens Number of times the campaign was opened.
+     * @returnf date last_open Date of the last time the email was opened.
+     * @returnf integer unique_opens Number of people who opened the campaign.
+     * @returnf integer clicks Number of times a link in the campaign was clicked.
+     * @returnf integer unique_clicks Number of unique recipient/click pairs for the campaign.
+     * @returnf date last_click Date of the last time a link in the email was clicked.
+     * @returnf integer users_who_clicked Number of unique recipients who clicked on a link in the campaign.
+     * @returnf integer emails_sent Number of email addresses campaign was sent to.
      */
     function campaignStats($cid) {
         $params = array();
@@ -216,10 +248,12 @@ class MCAPI {
     /**
      * Get an array of the urls being tracked, and their click counts for a given campaign
      *
-     * @section Campaign Related
+     * @section Campaign  Stats
      *
      * @param string $cid the campaign id to pull stats for (can be gathered using campaigns($id))
      * @return struct list of urls and their associated statistics
+     * @returnf integer clicks Number of times the specific link was clicked
+     * @returnf integer unique Number of unique people who clicked on the specific link
      */
     function campaignClickStats($cid) {
         $params = array();
@@ -228,14 +262,17 @@ class MCAPI {
     }
 
     /**
-     * Get all bounced email addresses for a given campaign
+     * Get all bounced email addresses for a given campaign<br/>
      * <strong>DEPRECATED:</strong> campaignBounces() has been deprecated and will be removed completely in a future release. see campaignHardBounces() and campaignSoftBounces() for replacements.
      *
-     * @section Campaign Related
+     * @section Campaign  Stats
      *
      * @deprecated See campaignHardBounces() and campaignSoftBounces() for replacements
      * @param string $cid the campaign id to pull bounces for (can be gathered using campaigns($id))
      * @return struct Struct of arrays of bounced email addresses (hard and soft)
+     * @returnf array hard Array of all email addresses that had Hard bounces for this campaign
+     * @returnf array soft Array of all email addresses that had Soft bounces for this campaign
+     * @returnf array syntax Array of all email addresses that had syntax errors in them (historical - always empty)
      */
     function campaignBounces($cid) {
         $params = array();
@@ -246,12 +283,12 @@ class MCAPI {
     /**
      * Get all email addresses with Hard Bounces for a given campaign
      *
-     * @section Campaign Related
+     * @section Campaign  Stats
      *
      * @param string $cid the campaign id to pull bounces for (can be gathered using campaigns($id))
      * @param int    $start optional, for large data sets, the page number to start at - defaults to 1st page of data
      * @param int    $limit optional, for large data sets, the number of results to return - defaults to 1000, upper limit set at 15000
-     * @return struct Struct of arrays of bounced email addresses (hard and soft)
+     * @return array Arrays of email addresses with Hard Bounces
      */
     function campaignHardBounces($cid, $start=0, $limit=1000) {
         $params = array();
@@ -264,12 +301,12 @@ class MCAPI {
     /**
      * Get all email addresses with Soft Bounces for a given campaign
      *
-     * @section Campaign Related
+     * @section Campaign  Stats
      *
      * @param string $cid the campaign id to pull bounces for (can be gathered using campaigns($id))
      * @param int    $start optional, for large data sets, the page number to start at - defaults to 1st page of data
      * @param int    $limit optional, for large data sets, the number of results to return - defaults to 1000, upper limit set at 15000
-     * @return struct Struct of arrays of bounced email addresses (hard and soft)
+     * @return array Arrays of email addresses with Soft Bounces
      */
     function campaignSoftBounces($cid, $start=0, $limit=1000) {
         $params = array();
@@ -282,7 +319,7 @@ class MCAPI {
     /**
      * Get all unsubscribed email addresses for a given campaign
      *
-     * @section Campaign Related
+     * @section Campaign  Stats
      *
      * @param string $cid the campaign id to pull bounces for (can be gathered using campaigns($id))
      * @param int    $start optional, for large data sets, the page number to start at - defaults to 1st page of data
@@ -300,12 +337,12 @@ class MCAPI {
     /**
      * Get all email addresses that complained about a given campaign
      *
-     * @section Campaign Related
+     * @section Campaign  Stats
      *
      * @param string $cid the campaign id to pull bounces for (can be gathered using campaigns($id))
      * @param int    $start optional, for large data sets, the page number to start at - defaults to 1st page of data
      * @param int    $limit optional, for large data sets, the number of results to return - defaults to 1000, upper limit set at 15000
-     * @return array list of email addresses that complained about this campaign
+     * @return array list of email addresses that complained (filed abuse reports) about this campaign
      */
     function campaignAbuseReports($cid, $start=0, $limit=1000) {
         $params = array();
@@ -318,10 +355,12 @@ class MCAPI {
     /**
      * Get the content (both html and text) for a campaign, exactly as it would appear in the campaign archive
      *
-     * @section Campaign Related
+     * @section Campaign  Related
      *
      * @param string $cid the campaign id to get content for (can be gathered using campaigns($id))
-     * @return array associative array of the campaign content with two keys (html and text)
+     * @return struct Struct containing all content for the campaign (see Returned Fields for details
+     * @returnf string html The HTML content used for the campgain with merge tags intact
+     * @returnf string text The Text content used for the campgain with merge tags intact
      */
     function campaignContent($cid) {
         $params = array();
@@ -332,12 +371,14 @@ class MCAPI {
     /**
      * Retrieve the list of email addresses that opened a given campaign with how many times they opened
      *
-     * @section Campaign Related
+     * @section Campaign AIM
      *
      * @param string $cid the campaign id to get opens for (can be gathered using campaigns($id))
      * @param int    $start optional, for large data sets, the page number to start at - defaults to 1st page of data
      * @param int    $limit optional, for large data sets, the number of results to return - defaults to 1000, upper limit set at 15000
-     * @return array list of email addresses that opened a campaign with their opens count
+     * @return array Array of structs containing email addresses and open counts
+     * @returnf string email Email address that opened the campaign
+     * @returnf integer open_count Total number of times the campaign was opened by this email address
      */
     function campaignOpenedAIM($cid, $start=0, $limit=1000) {
         $params = array();
@@ -350,7 +391,7 @@ class MCAPI {
     /**
      * Retrieve the list of email addresses that did not open a given campaign
      *
-     * @section Campaign Related
+     * @section Campaign AIM
      *
      * @param string $cid the campaign id to get no opens for (can be gathered using campaigns($id))
      * @param int    $start optional, for large data sets, the page number to start at - defaults to 1st page of data
@@ -368,13 +409,15 @@ class MCAPI {
     /**
      * Return the list of email addresses that clicked on a given url, and how many times they clicked
      *
-     * @section Campaign Related
+     * @section Campaign AIM
      *
      * @param string $cid the campaign id to get click stats for (can be gathered using campaigns($id))
      * @param string $url the URL of the link that was clicked on
      * @param int    $start optional, for large data sets, the page number to start at - defaults to 1st page of data 
      * @param int    $limit optional, for large data sets, the number of results to return - defaults to 1000, upper limit set at 15000
-     * @return array list of email addresses that clicked and their click counts
+     * @return array Array of structs containing email addresses and click counts
+     * @returnf string email Email address that opened the campaign
+     * @returnf integer clicks Total number of times the URL was clicked on by this email address
      */
     function campaignClickDetailAIM($cid, $url, $start=0, $limit=1000) {
         $params = array();
@@ -388,11 +431,14 @@ class MCAPI {
     /**
      * Given a campaign and email address, return the entire click and open history with timestamps, ordered by time
      *
-     * @section Campaign Related
+     * @section Campaign AIM
      *
      * @param string $cid the campaign id to get stats for (can be gathered using campaigns($id))
      * @param string $email_address the email address to get activity history for
-     * @return array list of actions (opens and clicks) that the email took, with timestamps
+     * @return array Array of structs containing actions (opens and clicks) that the email took, with timestamps
+     * @returnf string action The action taken (open or click)
+     * @returnf date timestamp Time the action occurred
+     * @returnf string url For clicks, the URL that was clicked
      */
     function campaignEmailStatsAIM($cid, $email_address) {
         $params = array();
@@ -407,7 +453,11 @@ class MCAPI {
      * @section List Related
      * @example xml-rpc_lists.php
      *
-     * @return array array of lists, including the id, name, date_created, date_last_campaign, and member_count
+     * @return array list of your Lists and their associated information (see Returned Fields for description)
+     * @returnf string id The list id for this list. This will be used for all other list management functions.
+     * @returnf string name The name of the list.
+     * @returnf date date_created The date that this list was created.
+     * @returnf integer member_count The number of active members in the given list.
      */
     function lists() {
         $params = array();
@@ -421,6 +471,9 @@ class MCAPI {
      *
      * @param string $id the list id to connect to
      * @return array list of merge tags for the list
+     * @returnf string name Name of the merge field
+     * @returnf char req Denotes whether the field is required (Y) or not (N)
+     * @returnf string tag The merge tag that's used for forms and listSubscribe() and listUpdateMember()
      */
     function listMergeVars($id) {
         $params = array();
@@ -435,6 +488,9 @@ class MCAPI {
      *
      * @param string $id the list id to connect to
      * @return struct list of interest groups for the list
+     * @returnf string name Name for the Interest groups
+     * @returnf string form_field Gives the type of interest group: checkbox,radio,select
+     * @returnf array groups Array of the group names
      */
     function listInterestGroups($id) {
         $params = array();
@@ -452,10 +508,10 @@ class MCAPI {
      *
      * @param string $id the list id to connect to
      * @param string $email_address the email address to subscribe
-     * @param array $merge_vars array of merges for the email (FNAME, LNAME, etc.)
-     * @param string $email_type email type preference for the email (html or text, defaults to html)
-     * @param boolean $double_optin flag to control whether a double opt-in confirmation message is sent, defaults to true
-     * @return boolean true on success
+     * @param array $merge_vars array of merges for the email (FNAME, LNAME, etc.) (see examples below for handling "blank" arrays)
+     * @param string $email_type optional - email type preference for the email (html or text, defaults to html)
+     * @param boolean $double_optin optional - flag to control whether a double opt-in confirmation message is sent, defaults to true
+     * @return boolean true on success, false on failure. When using MCAPI.class.php, the value can be tested and error messages pulled from the MCAPI object (see below)
      */
     function listSubscribe($id, $email_address, $merge_vars, $email_type='html', $double_optin=true) {
         $params = array();
@@ -478,7 +534,7 @@ class MCAPI {
      * @param boolean $delete_member flag to completely delete the member from your list instead of just unsubscribing, default to false
      * @param boolean $send_goodbye flag to send the goodbye email to the email address, defaults to true
      * @param boolean $send_notify flag to send the unsubscribe notification email to the address defined in the list email notification settings, defaults to true
-     * @return boolean true on success
+     * @return boolean true on success, false on failure. When using MCAPI.class.php, the value can be tested and error messages pulled from the MCAPI object (see below)
      */
     function listUnsubscribe($id, $email_address, $delete_member=false, $send_goodbye=true, $send_notify=true) {
         $params = array();
@@ -500,7 +556,7 @@ class MCAPI {
      * @param array $merge_vars array of new field values to update the member with.  Use "EMAIL" to update the email address and "INTERESTS" to update the interest groups
      * @param string $email_type change the email type preference for the member ("html" or "text").  Leave blank to keep the existing preference (optional)
      * @param boolean $replace_interests flag to determine whether we replace the interest groups with the updated groups provided, or we add the provided groups to the member's interest groups (optional, defaults to true)
-     * @return boolean true on success
+     * @return boolean true on success, false on failure. When using MCAPI.class.php, the value can be tested and error messages pulled from the MCAPI object
      */
     function listUpdateMember($id, $email_address, $merge_vars, $email_type='', $replace_interests=true) {
         $params = array();
@@ -523,7 +579,10 @@ class MCAPI {
      * @param boolean $double_optin flag to control whether to send an opt-in confirmation email - defaults to true
      * @param boolean $update_existing flag to control whether to update members that are already subscribed to the list or to return an error, defaults to false (return error)
      * @param boolean $replace_interests flag to determine whether we replace the interest groups with the updated groups provided, or we add the provided groups to the member's interest groups (optional, defaults to true)
-     * @return struct success count, error count, and any errors that occurred while subscribing the members
+     * @return struct Array of result counts and any errors that occurred
+     * @returnf integer success_count Number of email addresses that were succesfully added/updated
+     * @returnf integer error_count Number of email addresses that failed during addition/updating
+     * @returnf array errors Array of error structs. Each error struct will contain "code", "message", and "email_address"
      */
     function listBatchSubscribe($id, $batch, $double_optin=true, $update_existing=false, $replace_interests=true) {
         $params = array();
@@ -545,7 +604,10 @@ class MCAPI {
      * @param boolean $delete_member flag to completely delete the member from your list instead of just unsubscribing, default to false
      * @param boolean $send_goodbye flag to send the goodbye email to the email addresses, defaults to true
      * @param boolean $send_notify flag to send the unsubscribe notification email to the address defined in the list email notification settings, defaults to false
-     * @return struct success count, error count, and any errors that occurred while unsubscribing the members
+     * @return struct Array of result counts and any errors that occurred
+     * @returnf integer success_count Number of email addresses that were succesfully added/updated
+     * @returnf integer error_count Number of email addresses that failed during addition/updating
+     * @returnf array errors Array of error structs. Each error struct will contain "code", "message", and "email_address"
      */
     function listBatchUnsubscribe($id, $emails, $delete_member=false, $send_goodbye=true, $send_notify=false) {
         $params = array();
@@ -567,7 +629,9 @@ class MCAPI {
      * @param string $status the status to get members for - one of(subscribed, unsubscribed, or cleaned), defaults to subscribed
      * @param int    $start optional, for large data sets, the page number to start at - defaults to 1st page of data 
      * @param int    $limit optional, for large data sets, the number of results to return - defaults to 100, upper limit set at 15000
-     * @return array array of list members, with their email address, and the timestamp of their associated status(date subscribed, unsubscribed, or cleaned)
+     * @return array Array of list member structs (see Returned Fields for details)
+     * @returnf string email Member email address
+     * @returnf date timestamp timestamp of their associated status(date subscribed, unsubscribed, or cleaned)
      */
     function listMembers($id, $status='subscribed', $start=0, $limit=100) {
         $params = array();
@@ -585,7 +649,12 @@ class MCAPI {
      * @example mcapi_listMemberInfo.php
      * @param string $id the list id to connect to
      * @param string $email_address the member email address to get information for
-     * @return array array of list member info, including "email", "email_type", "status", "merges", and "timestamp"
+     * @return array array of list member info (see Returned Fields for details)
+     * @returnf string email The email address associated with this record
+     * @returnf string email_type The type of emails this customer asked to get: html or text
+     * @returnf array merges An associative array of all the merge tags and the data for those tags for this email address
+     * @returnf string status The subscription status for this email address, either subscribed, unsubscribed or cleaned
+     * @returnf date timestamp The time this email address was added to the list
      */
     function listMemberInfo($id, $email_address) {
         $params = array();
