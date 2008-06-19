@@ -38,7 +38,7 @@ $XMLOutput = <<<XML
 			<customer_postal_code>37013</customer_postal_code>
 			<customer_country>US</customer_country>
 			<customer_phone>(123) 456-7890</customer_phone>
-			<customer_email>dirkgently@fredalger.net</customer_email>
+			<customer_email>fred@fredalger.net</customer_email>
 			<customer_ip>71.228.237.177</customer_ip>
 			<shipping_first_name>John</shipping_first_name>
 			<shipping_last_name>Doe</shipping_last_name>
