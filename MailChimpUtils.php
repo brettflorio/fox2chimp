@@ -30,33 +30,33 @@ require 'MCAPI.class.php';
  * @return  boolean             Returns true if member subscribed to the list.
  */
 function subscribe_user_to_list($user, $list_name, $credentials) {
-    $mc = new MCAPI($credentials['user'], $credentials['pass']);
+  isset($credentials['apikey']) and $GLOBALS['mc_api_key'] = $credentials['apikey'];
+  $mc = new MCAPI($credentials['user'], $credentials['pass']);
 
-    $mc or die("Unable to connect to MailChimp API, error: ".$mc->errorMessage);
+  $mc or die("Unable to connect to MailChimp API, error: ".$mc->errorMessage);
 
-    $lists = $mc->lists() or die($mc->errorMessage);
-    $list_id = null;
+  $lists = $mc->lists() or die($mc->errorMessage);
+  $list_id = null;
 
-    foreach ($lists AS $list) { // Iterate, finding the list named $list_name
-        if ($list['name'] == $list_name) {
-            $list_id = $list['id'];
-        }
+  foreach ($lists AS $list) { // Iterate, finding the list named $list_name
+    if ($list['name'] == $list_name) {
+      $list_id = $list['id'];
     }
+  }
 
-		$list_id or die("Couldn't find a list named '$list_name'!");
+	$list_id or die("Couldn't find a list named '$list_name'!");
 
-    $retval = $mc->listSubscribe($list_id,
-     $user['email'],
-     array('FNAME' => $user['first_name'], 'LNAME' => $user['last_name']),
-     isset($user['format']) ? $user['format'] : 'html',
-     isset($user['confirm']) ? $user['confirm'] : true
-     );
+  $retval = $mc->listSubscribe($list_id,
+   $user['email'],
+   array('FNAME' => $user['first_name'], 'LNAME' => $user['last_name']),
+   isset($user['format']) ? $user['format'] : 'html',
+   isset($user['confirm']) ? $user['confirm'] : true);
 
-    ($retval or preg_match("/already subscribed/i", $mc->errorMessage)) or 
-		 die("Unable to load listSubscribe()! ".
-     "MailChimp reported error:\n\tCode=".$mc->errorCode.
-     "\n\tMsg=".$mc->errorMessage."\n");
+  ($retval or preg_match("/already subscribed/i", $mc->errorMessage)) or 
+	 die("Unable to load listSubscribe()! ".
+   "MailChimp reported error:\n\tCode=".$mc->errorCode.
+   "\n\tMsg=".$mc->errorMessage."\n");
 
-    return true;    // All's well.
+  return true;    // All's well.
 }
 ?>
