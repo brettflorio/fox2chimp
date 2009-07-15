@@ -20,6 +20,8 @@ $Custom_Field_Value = 'yes';    // The value of the custom field that indicates 
 $Email_Format = 'html';         // The customer's preferred email format.
 $Send_Confirmation = true;      // If true, MailChimp will send a confirmation email to the customer.
 
+$List_Name = 'My Awesome List'; // The exact name of your mailing list.  No List ID required, we'll look it up.
+
 $key = 'CHANGE THIS TEXT to your own datafeed keyphrase';
 
 $_POST['FoxyData'] or die("error"); // Make sure we got passed some FoxyData
@@ -54,7 +56,7 @@ foreach ($data->document->transactions[0]->transaction as $tx) {
 							'email' => $tx->customer_email[0]->tagData,
 							'format' => $Email_Format,
 							'confirm' => $Send_Confirmation),
-						 'My First List',
+						 $List_Name,
 						 $MailChimp_Auth);
 				}
 }
