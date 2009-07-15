@@ -6,6 +6,7 @@ include 'MailChimpUtils.php';   // Bring out the Chimp.
 $MailChimp_Auth = array(
     'user'  => 'username',     // Replace "username" with your MailChimp username
     'pass'  => 'password'      // Replace "password" with your MailChimp password
+    // 'apikey' => 'API Key'   // Optionally, comment out or delete the two previous lines, uncomment this line, and replace 'API Key' with your API key, available from your MailChimp dashboard.  YMMV
 );
 
 /**
