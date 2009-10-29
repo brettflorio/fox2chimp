@@ -30,7 +30,12 @@ require 'MCAPI.class.php';
  * @return  boolean             Returns true if member subscribed to the list.
  */
 function subscribe_user_to_list($user, $list_name, $credentials) {
-  isset($credentials['apikey']) and $GLOBALS['mc_api_key'] = $credentials['apikey'];
+  if (isset($credentials['apikey'])) {
+    $GLOBALS['mc_api_key'] = $credentials['apikey'];    // This is the way to get the API key into the MCAPI class
+    $credentials['user'] = '';  // With an API key, these don't matter.
+    $credentials['pass'] = '';
+  }
+
   $mc = new MCAPI($credentials['user'], $credentials['pass']);
 
   $mc or die("Unable to connect to MailChimp API, error: ".$mc->errorMessage);
