@@ -35,6 +35,8 @@ class MCAPI {
 	//do more "caching" of the uuid for those people that keep instantiating this...
 	if (isset($GLOBALS["mc_api_key"]) && $GLOBALS["mc_api_key"]!=""){
 		$this->api_key = $GLOBALS["mc_api_key"];
+        if (!$this->apiUrl)
+            $this->apiUrl = parse_url("http://api.mailchimp.com/" . $this->version . "/?output=php");
 	} else {
 		$this->apiUrl = parse_url("http://api.mailchimp.com/" . $this->version . "/?output=php");
 		$this->api_key = $this->callServer("login", array("username" => $username, "password" => $password));
