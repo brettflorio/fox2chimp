@@ -1,4 +1,4 @@
-<?
+<?php
 /*
 	test.xmldatafeed.php
 	
@@ -20,8 +20,10 @@ $myURL = 'http://localhost/~fred/fox2chimp/fc-mailchimp.php';
 $myKey = 'CHANGE THIS TEXT to your own datafeed keyphrase';
 
 // This is FoxyCart Version 0.6 XML.  See http://wiki.foxycart.com/docs:datafeed?s[]=xml
+$XMLHeader = '<' . '?xml version=\'1.0\' standalone=\'yes\'?' . '>';
+
 $XMLOutput = <<<XML
-<?xml version='1.0' standalone='yes'?>
+$XMLHeader
 <foxydata>
 	<datafeed_version>XML FoxyCart Version 0.6</datafeed_version>
 	<transactions>
