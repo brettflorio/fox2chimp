@@ -4,11 +4,12 @@ require 'class.xmlparser.php';
 include 'MailChimpUtils.php';   // Bring out the Chimp.
 
 $MailChimp_Auth = array(
-	// 'user'  => 'username',	/			/ Replace "username" with your MailChimp username
-	// 'pass'  => 'password',				// Replace "password" with your MailChimp password
 	'apikey' => 'put your API key here'		// Using an API key is now the preferred method of connecting to MailChimp.
-											// If you want to use the old-style user/password authentication then uncomment the previous two lines
-											// fill in your username and password, and comment out the API key setting
+											// If you want to use the old-style user/password authentication then uncomment the previous next lines
+											// fill in your username and password, and comment out the line that begins, 'apikey'
+
+	// 'user'  => 'username',			// [DEPRECATED] Replace "username" with your MailChimp username
+	// 'pass'  => 'password',			// [DEPRECATED] Replace "password" with your MailChimp password
 );
 
 /**
