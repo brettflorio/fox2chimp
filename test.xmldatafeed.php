@@ -1,13 +1,15 @@
 <?php
 /*
 	test.xmldatafeed.php
-	
+
 	The purpose of this file is to help you set up and debug your FoxyCart XML DataFeed scripts.
 	It's designed to mimic FoxyCart.com and send encrypted and encoded XML to a URL of your choice.
 	It will print out the response that your script gives back, which should be "foxy" if successful.
-	
+
 	NOTE: This script uses cURL, which isn't always enabled, especially on shared hosting.
-	
+
+	Change user@example.com below to an email address you want to test with.
+
 */
 
 // ======================================================================================
@@ -40,7 +42,7 @@ $XMLHeader
 			<customer_postal_code>37013</customer_postal_code>
 			<customer_country>US</customer_country>
 			<customer_phone>(123) 456-7890</customer_phone>
-			<customer_email>fred@fredalger.net</customer_email>
+			<customer_email>user@example.com</customer_email>
 			<customer_ip>71.228.237.177</customer_ip>
 			<shipping_first_name>John</shipping_first_name>
 			<shipping_last_name>Doe</shipping_last_name>
