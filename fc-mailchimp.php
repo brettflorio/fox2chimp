@@ -4,9 +4,11 @@ require 'class.xmlparser.php';
 include 'MailChimpUtils.php';   // Bring out the Chimp.
 
 $MailChimp_Auth = array(
-    'user'  => 'username',     // Replace "username" with your MailChimp username
-    'pass'  => 'password'      // Replace "password" with your MailChimp password
-    // 'apikey' => 'API Key'   // Optionally, comment out or delete the two previous lines, uncomment this line, and replace 'API Key' with your API key, available from your MailChimp dashboard.  YMMV
+	// 'user'  => 'username',	/			/ Replace "username" with your MailChimp username
+	// 'pass'  => 'password',				// Replace "password" with your MailChimp password
+	'apikey' => 'put your API key here'		// Using an API key is now the preferred method of connecting to MailChimp.
+											// If you want to use the old-style user/password authentication then uncomment the previous two lines
+											// fill in your username and password, and comment out the API key setting
 );
 
 /**
@@ -31,7 +33,7 @@ function fatal_error_handler($errno, $errstr, $errfile, $errline, $errcontext) {
 	die($errstr);
 	return true;
 }
-set_error_handler(fatal_error_handler);
+set_error_handler('fatal_error_handler');
 
 $FoxyData = rc4crypt::decrypt($key, urldecode($_POST["FoxyData"]));
 

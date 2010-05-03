@@ -31,9 +31,8 @@ require 'MCAPI.class.php';
  */
 function subscribe_user_to_list($user, $list_name, $credentials) {
   if (isset($credentials['apikey'])) {
-    $GLOBALS['mc_api_key'] = $credentials['apikey'];    // This is the way to get the API key into the MCAPI class
-    $credentials['user'] = '';  // With an API key, these don't matter.
-    $credentials['pass'] = '';
+    $credentials['user'] = $credentials['apikey'];    // With an API key, pass it as the first parameter to the MCAPI constructor.
+    $credentials['pass'] = null;
   }
 
   $mc = new MCAPI($credentials['user'], $credentials['pass']);
