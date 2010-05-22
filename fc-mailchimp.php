@@ -44,13 +44,14 @@ $data->Parse();
 foreach ($data->document->transactions[0]->transaction as $tx) {
 				$subscribe = !$Use_Custom_Field;
 
-				if ($Use_Custom_Field) {
+				if ($Use_Custom_Field && isset($tx->custom_fields[0]->custom_field)) {
 						foreach ($tx->custom_fields[0]->custom_field as $field) {
 								$subscribe = $subscribe ||
 								 ($field->custom_field_name[0]->tagData == $Custom_Field &&
 									$field->custom_field_value[0]->tagData == $Custom_Field_Value);
 						}
 				}
+die(serialize($subscribe));
 
 				if ($subscribe) {
 						subscribe_user_to_list(// See MailChimpUtils.php for documentation.
