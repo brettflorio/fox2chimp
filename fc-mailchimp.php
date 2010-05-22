@@ -51,7 +51,6 @@ foreach ($data->document->transactions[0]->transaction as $tx) {
 									$field->custom_field_value[0]->tagData == $Custom_Field_Value);
 						}
 				}
-die(serialize($subscribe));
 
 				if ($subscribe) {
 						subscribe_user_to_list(// See MailChimpUtils.php for documentation.
