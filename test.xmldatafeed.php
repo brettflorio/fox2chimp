@@ -18,8 +18,8 @@
 // Set the key you entered in your FoxyCart.com admin.
 // Modify the XML below as necessary.  DO NOT modify the structure, just the data
 // ======================================================================================
-$myURL = 'http://localhost/~fred/fox2chimp/fc-mailchimp.php';
-$myKey = 'CHANGE THIS TEXT to your own datafeed keyphrase';
+$myURL = 'http://path/to/file.php'; //Set the URL you want to post the XML to.
+$myKey = ''; // Set the key you entered in your FoxyCart.com admin.
 
 // This is FoxyCart Version 0.6 XML.  See http://wiki.foxycart.com/docs:datafeed?s[]=xml
 $XMLHeader = '<' . '?xml version=\'1.0\' standalone=\'yes\'?' . '>';
@@ -42,7 +42,7 @@ $XMLHeader
 			<customer_postal_code>37013</customer_postal_code>
 			<customer_country>US</customer_country>
 			<customer_phone>(123) 456-7890</customer_phone>
-			<customer_email>user@example.com</customer_email>
+			<customer_email>email@example.com</customer_email>
 			<customer_ip>71.228.237.177</customer_ip>
 			<shipping_first_name>John</shipping_first_name>
 			<shipping_last_name>Doe</shipping_last_name>

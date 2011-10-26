@@ -1,3 +1,5 @@
 h1. fox2chimp
 
 A MailChimp integration for FoxyCart, see "here":http://wiki.foxycart.com/integration/mailchimp for details.
+
+Revised June 25, 2011 for v 1.3 

@@ -32,21 +32,22 @@ require 'MCAPI.class.php';
 function subscribe_user_to_list($user, $list_name, $credentials) {
   if (isset($credentials['apikey'])) {
     $credentials['user'] = $credentials['apikey'];    // With an API key, pass it as the first parameter to the MCAPI constructor.
-    $credentials['pass'] = null;
   }
 
-  $mc = new MCAPI($credentials['user'], $credentials['pass']);
+  $mc = new MCAPI($credentials['user']);
 
   $mc or die("Unable to connect to MailChimp API, error: ".$mc->errorMessage);
 
   $lists = $mc->lists() or die($mc->errorMessage);
   $list_id = null;
 
-  foreach ($lists AS $list) { // Iterate, finding the list named $list_name
-    if ($list['name'] == $list_name) {
-      $list_id = $list['id'];
-    }
+
+  foreach ($lists['data'] AS $list) { // Iterate, finding the list named $list_name
+  if ($list['name'] == $list_name) {
+    $list_id = $list['id'];
   }
+}
+
 
 	$list_id or die("Couldn't find a list named '$list_name'!");
 
