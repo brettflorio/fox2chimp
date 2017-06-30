@@ -57,7 +57,7 @@ function subscribe_user_to_list($user, $list_name, $credentials) {
    isset($user['format']) ? $user['format'] : 'html',
    isset($user['confirm']) ? $user['confirm'] : true);
 
-  ($retval or preg_match("/already subscribed/i", $mc->errorMessage)) or 
+  ($retval or $mc->errorCode == 214 or preg_match("/already subscribed/i", $mc->errorMessage)) or
 	 die("Unable to load listSubscribe()! ".
    "MailChimp reported error:\n\tCode=".$mc->errorCode.
    "\n\tMsg=".$mc->errorMessage."\n");
