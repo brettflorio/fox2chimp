@@ -34,7 +34,7 @@ function subscribe_user_to_list($user, $list_name, $credentials) {
     $credentials['user'] = $credentials['apikey'];    // With an API key, pass it as the first parameter to the MCAPI constructor.
   }
 
-  $mc = new MCAPI($credentials['user']);
+  $mc = new MCAPI($credentials['user'], true);
 
   $mc or die("Unable to connect to MailChimp API, error: ".$mc->errorMessage);
 
